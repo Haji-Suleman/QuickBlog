@@ -28,7 +28,9 @@
     "dotenv": "^17.0.0",
     "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.1",
     "multer": "^2.0.1",
+    "nestjs-multer-extended": "^1.4.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },

@@ -4,12 +4,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BlogModule } from './Blog/blog.module';
 import { AdminModule } from './admin/admin.module';
-import { ImageKitModule } from './image-kit/image-kit.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
     controllers: [AppController],
     imports: [
         BlogModule,
+        MulterModule.register({
+            dest: 'uploads/',
+            storage: 'disk',
+            limits: { fileSize: 5 * 1024 * 1024 },
+        }),
         ConfigModule.forRoot({ isGlobal: true }),
         MongooseModule.forRootAsync({
             imports: [ConfigModule],
@@ -20,13 +25,7 @@ import { ImageKitModule } from './image-kit/image-kit.module';
             inject: [ConfigService],
         }),
         AdminModule,
-        ImageKitModule,
-
     ],
 })
-export class AppModule { }
-// connection string mongodb+srv://gocerok690:dbpassword@cluster0.w8999gj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
-// gocerok690@asimarif.com
-// haji1212
-// dbPassword : dbpassword
+export class AppModule { }

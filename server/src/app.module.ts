@@ -11,9 +11,7 @@ import { MulterModule } from '@nestjs/platform-express';
     imports: [
         BlogModule,
         MulterModule.register({
-            dest: 'uploads/',
-            storage: 'disk',
-            limits: { fileSize: 5 * 1024 * 1024 },
+            dest: './uploads',
         }),
         ConfigModule.forRoot({ isGlobal: true }),
         MongooseModule.forRootAsync({
@@ -29,3 +27,9 @@ import { MulterModule } from '@nestjs/platform-express';
 })
 
 export class AppModule { }
+
+// connection string mongodb+srv://gocerok690:dbpassword@cluster0.w8999gj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+// gocerok690@asimarif.com
+// haji1212
+// dbPassword : dbpassword

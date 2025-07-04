@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "nestjs-multer-extended": "^1.4.2"
+  }
+}

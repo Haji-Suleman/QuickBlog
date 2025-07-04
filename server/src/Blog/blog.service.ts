@@ -3,33 +3,37 @@ import { Model } from 'mongoose';
 import { Blog, BlogDocument } from './blog.schema';
 import { Injectable } from '@nestjs/common';
 import { AddBlogType } from 'src/types';
+import { Express } from 'express';
+
 @Injectable()
 export class BlogService {
     constructor(
         @InjectModel('blog') private blogModel: Model<BlogDocument>,
     ) { }
 
-    async addBlog(body: AddBlogType) {
+    async addBlog(body: AddBlogType, file) {
         try {
-            // const { title, subTitle, description, category, isPublished, imageFile } = body;
-// 
-            // if (!title || !subTitle || !description || !category || !imageFile) {
-                // return { success: false, message: 'Missing required fields' };
-            // }
+            const { title, subTitle, description, category, isPublished } = body;
 
-            // upload to imagekit
-            // const blog = await this.blogModel.create({
-                // title,
-                // subTitle,
-                // description,
-                // category,
-                // isPublished,
-            // });
+            if (!title || !subTitle || !description || !category || !file) {
+                return { success: false, message: 'Missing required fields' };
+            }
 
-            return { success: true };
+            const imageUrl = `/uploads/${file.filename}`;
+
+            await this.blogModel.create({
+                title,
+                subTitle,
+                description,
+                category,
+                isPublished,
+                image: imageUrl,
+            });
+
+            return { success: true, message: 'Blog created', image: imageUrl };
         } catch (error) {
-            console.log(error);
-            return { success: false, message: 'Upload failed' };
+            console.error(error);
+            return { success: false, message: 'Blog creation failed' };
         }
     }
 }

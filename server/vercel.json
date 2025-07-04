@@ -1,8 +1,5 @@
 {
     "version": 2,
-    "env": {
-        "MONGODB_URL": "@MONGODB_URL"
-    },
     "builds": [
         {
             "src": "src/main.ts",

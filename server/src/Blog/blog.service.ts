@@ -33,7 +33,56 @@ export class BlogService {
             return { success: true, message: 'Blog created', image: imageUrl };
         } catch (error) {
             console.error(error);
-            return { success: false, message: 'Blog creation failed' };
+            return { success: false, message: error.message };
         }
     }
+    async getAllBlogs() {
+        try {
+            const blogs = await this.blogModel.find({ isPublished: true })
+            return { success: true, blogs }
+        } catch (error) {
+            return { success: false, message: error.message }
+        }
+
+    }
+    async getBlogById(blogId: string) {
+        try {
+            // from the parse
+            const blog = await this.blogModel.findById(blogId)
+            return { success: true, blog }
+
+        } catch (error) {
+            console.log(error)
+            return { success: false, message: error.message }
+        }
+    }
+    async deleteBlogById(blogId: string) {
+        try {
+            // from the body
+            const blog = await this.blogModel.findByIdAndDelete(blogId)
+            if (!blog) {
+                return { success: false, message: "Blog not Found" }
+            }
+            return { success: true, blog }
+
+        } catch (error) {
+            console.log(error)
+            return { success: false, message: error.message }
+        }
+    }
+    async togglePublish(id: string) {
+        try {
+            const blog = await this.blogModel.findByIdAndUpdate(id);
+            if (blog) {
+                await blog.save();
+                return { success: true, message: "Blog updated successfully" };
+            } else {
+                return { success: false, message: "Blog not found" };
+            }
+        } catch (error) {
+            return { success: false, message: error.message };
+        }
+    }
+
+
 }

@@ -1,15 +1,18 @@
-import { Controller, Post, UploadedFile, Body, UseInterceptors } from '@nestjs/common';
+import { Controller, Post, UploadedFile, Body, UseInterceptors, Get, Param, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { BlogService } from './blog.service';
 import { AddBlogType } from 'src/types';
+import auth from 'src/middleware/auth.middleware';
 
-@Controller('blogs')
-export class BlogController {
+@Controller('api/blogs')
+export class BlogController implements NestModule {
     constructor(private readonly blogService: BlogService) { }
-
-    @Post()
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(auth).forRoutes({ path: "/delete", method: RequestMethod.POST }, { path: "/toggle-publish", method: RequestMethod.POST })
+    }
+    @Post('add')
     @UseInterceptors(
         FileInterceptor('file', {
             storage: diskStorage({
@@ -24,4 +27,21 @@ export class BlogController {
     addBlog(@UploadedFile() file, @Body() body: AddBlogType) {
         return this.blogService.addBlog(body, file);
     }
+    @Get('all')
+    getAllBlogs() {
+        return this.blogService.getAllBlogs();
+    }
+    @Get('/:blogId')
+    getBlogById(@Param('blogId') id: string) {
+        return this.blogService.getBlogById(id);
+    }
+    @Post("/delete")
+    deleteBlogById(@Body("id") id: string) {
+        return this.blogService.deleteBlogById(id)
+    }
+    @Post("/toggle-publish")
+    togglePublish(@Body("id") id: string) {
+        return this.blogService.togglePublish(id)
+    }
+
 }

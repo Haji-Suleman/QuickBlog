@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose"
+import { timestamp } from "rxjs";
 
 export type BlogDocument = Document & Blog;
 
@@ -19,5 +20,8 @@ export class Blog {
     isPublished: boolean;
     @Prop({ default: Date.now })
     createdAt: string;
+    @Prop({ default: Date.now })
+    updatedAt:string;
+
 }
 export const BlogSchema = SchemaFactory.createForClass(Blog); 

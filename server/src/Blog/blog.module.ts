@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Blog, BlogSchema } from './blog.schema';
 import { BlogService } from './blog.service';
 import { BlogController } from './blog.controller';
+import auth from 'src/middleware/auth.middleware';
 
 @Module({
     imports: [MongooseModule.forFeature([{ name: 'blog', schema: BlogSchema }])],
@@ -10,4 +11,8 @@ import { BlogController } from './blog.controller';
     controllers: [BlogController]
 
 })
-export class BlogModule { }
+export class BlogModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(auth).forRoutes("blogs/add")
+    }
+}

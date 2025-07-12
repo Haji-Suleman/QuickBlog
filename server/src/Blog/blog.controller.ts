@@ -10,7 +10,11 @@ import auth from 'src/middleware/auth.middleware';
 export class BlogController implements NestModule {
     constructor(private readonly blogService: BlogService) { }
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(auth).forRoutes({ path: "/delete", method: RequestMethod.POST }, { path: "/toggle-publish", method: RequestMethod.POST })
+        consumer.apply(auth).forRoutes(
+            { path: 'api/blogs/delete', method: RequestMethod.POST },
+            { path: 'api/blogs/toggle-publish', method: RequestMethod.POST }
+        );
+
     }
     @Post('add')
     @UseInterceptors(

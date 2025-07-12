@@ -1,27 +1,27 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose"
-import { timestamp } from "rxjs";
 
 export type BlogDocument = Document & Blog;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Blog {
-    @Prop({ required: true, type: String })
+    @Prop({ required: true })
     title: string;
-    @Prop({ type: String })
-    subTitle: string;
-    @Prop({ required: true, type: String })
-    description: string;
-    @Prop({ required: true, type: String })
-    category: string;
-    @Prop({ required: true, type: String })
-    image: string;
-    @Prop({ required: true, type: Boolean })
-    isPublished: boolean;
-    @Prop({ default: Date.now })
-    createdAt: string;
-    @Prop({ default: Date.now })
-    updatedAt:string;
 
+    @Prop()
+    subTitle: string;
+
+    @Prop({ required: true })
+    description: string;
+
+    @Prop({ required: true })
+    category: string;
+
+    @Prop({ required: true })
+    image: string;
+
+    @Prop({ required: true })
+    isPublished: boolean;
 }
+
 export const BlogSchema = SchemaFactory.createForClass(Blog); 

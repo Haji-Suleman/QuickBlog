@@ -72,13 +72,15 @@ export class BlogService {
     }
     async togglePublish(id: string) {
         try {
-            const blog = await this.blogModel.findByIdAndUpdate(id);
-            if (blog) {
-                await blog.save();
-                return { success: true, message: "Blog updated successfully" };
-            } else {
+            const blog = await this.blogModel.findById(id);
+            if (!blog) {
                 return { success: false, message: "Blog not found" };
             }
+
+            blog.isPublished = !blog.isPublished;
+            await blog.save();
+
+            return { success: true, message: "Blog updated successfully", isPublished: blog.isPublished };
         } catch (error) {
             return { success: false, message: error.message };
         }
@@ -86,3 +88,4 @@ export class BlogService {
 
 
 }
+

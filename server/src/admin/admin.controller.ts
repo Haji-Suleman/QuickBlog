@@ -8,6 +8,6 @@ export class AdminController {
     @Post('/login')
     adminLogin(@Body() body: { email: string; password: string }) {
         const { email, password } = body;
-        return this.adminService.adminLogin(email, password);
+        return this.adminService.adminLogin(email, password);   
     }
 }

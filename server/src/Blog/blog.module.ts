@@ -13,6 +13,6 @@ import auth from 'src/middleware/auth.middleware';
 })
 export class BlogModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-        consumer.apply(auth).forRoutes("blogs/add")
+        consumer.apply(auth).forRoutes("api/blogs/add")
     }
 }

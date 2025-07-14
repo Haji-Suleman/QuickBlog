@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BlogModule } from './Blog/blog.module';
 import { AdminModule } from './admin/admin.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
     controllers: [AppController],
@@ -23,6 +24,7 @@ import { MulterModule } from '@nestjs/platform-express';
             inject: [ConfigService],
         }),
         AdminModule,
+        CommentModule,
     ],
 })
 

@@ -79,12 +79,12 @@ export class BlogService {
 
             blog.isPublished = !blog.isPublished;
             await blog.save();
-
             return { success: true, message: "Blog updated successfully", isPublished: blog.isPublished };
         } catch (error) {
             return { success: false, message: error.message };
         }
     }
+
 
 
 }

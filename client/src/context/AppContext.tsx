@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 const AppContext = createContext({});
 
-export const AppProviders: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const navigate = useNavigate()
     const [token, setToken] = useState<null | string>(null)
     const [blogs, setBlogs] = useState([])

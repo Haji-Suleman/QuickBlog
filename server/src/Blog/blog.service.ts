@@ -3,12 +3,12 @@ import { Model } from 'mongoose';
 import { Blog, BlogDocument } from './blog.schema';
 import { Injectable } from '@nestjs/common';
 import { AddBlogType } from 'src/types';
-import { Express } from 'express';
 
 @Injectable()
 export class BlogService {
     constructor(
         @InjectModel('blog') private blogModel: Model<BlogDocument>,
+        @InjectModel('comment') private commentModel: Model<BlogDocument>
     ) { }
 
     async addBlog(body: AddBlogType, file) {
@@ -58,11 +58,11 @@ export class BlogService {
     }
     async deleteBlogById(blogId: string) {
         try {
-            // from the body
             const blog = await this.blogModel.findByIdAndDelete(blogId)
             if (!blog) {
                 return { success: false, message: "Blog not Found" }
             }
+            await this.commentModel.deleteMany({ blog: blogId })
             return { success: true, blog }
 
         } catch (error) {

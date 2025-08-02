@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
 import * as jwt from 'jsonwebtoken'; // ✅ fix for ESM
+import { Document, Model } from 'mongoose';
 
 @Injectable()
 export class AdminService {
@@ -8,7 +10,7 @@ export class AdminService {
   private readonly EnvAdminPassword: string;
   private readonly JWT_SECRET: string;
 
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService, @InjectModel("comment") private readonly commentModel: Model<Document>, @InjectModel("comment") private readonly blogModel: Model<Document>) {
     this.EnvAdminEmail = this.configService.get<string>('ADMIN_EMAIL') || '';
     this.EnvAdminPassword = this.configService.get<string>('ADMIN_PASSWORD') || '';
     this.JWT_SECRET = this.configService.get<string>('JWT_SECRET') || "";
@@ -21,4 +23,54 @@ export class AdminService {
     const token = jwt.sign({ email }, this.JWT_SECRET);
     return { success: true, token };
   }
+  async getAllBlogsAdmin() {
+    try {
+      const blog = await this.blogModel.find({}).sort({ createdAt: -1 });
+    } catch (error) {
+      return { succes: false, error: error.message }
+    }
+  }
+  async getAllComment() {
+    try {
+      const comments = await this.commentModel.find({}).populate("blog").sort({ createdAt: -1 })
+      return { success: true, comments }
+    } catch (error) {
+      return { success: false, message: error.message }
+
+    }
+  }
+  async getDashboard(body) {
+    try {
+      const recentBlogs = await this.blogModel.find({}).sort({ createdAt: -1 }).limit(5) 
+      const blogs = await this.blogModel.countDocuments(); 
+      const comments = await this.commentModel.countDocuments()
+      const drafts = await this.blogModel.countDocuments({ isPublished: true })
+      const dashboardData = {
+        blogs, comments, drafts, recentBlogs
+      }
+      return { success: true, dashboardData }
+    }
+    catch (error) {
+      return { success: false, message: error.message }
+    }
+  }
+  async deleteCommentById(body) {
+    try {
+      const { id } = body
+      await this.commentModel.findByIdAndDelete(+id)
+      return { success: true, message: "Comment deleted successfully" }
+    } catch (error) {
+      return { success: false, message: error.message }
+    }
+  }
+  async approveCommentById(body) {
+    try {
+      const { id } = body;
+      await this.commentModel.findByIdAndUpdate(id, { isApproved: true });
+      return { success: true, message: "Comment Approved successfully" }
+    } catch (error) {
+      return { success: false, message: error.message }
+    }
+  }
+
 }

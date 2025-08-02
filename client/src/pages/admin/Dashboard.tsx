@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { assets, dashboard_data } from '../../assets/assets'
 import type { DashboardDataType } from '../../types'
 import BlogTableItem from '../../components/admin/BlogTableItem'

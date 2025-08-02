@@ -4,11 +4,13 @@ import { Blog, BlogSchema } from './blog.schema';
 import { BlogService } from './blog.service';
 import { BlogController } from './blog.controller';
 import auth from 'src/middleware/auth.middleware';
+import { Comment } from 'src/comment/comment.schema';
 
 @Module({
-    imports: [MongooseModule.forFeature([{ name: 'blog', schema: BlogSchema }])],
+    imports: [MongooseModule.forFeature([{ name: 'blog', schema: BlogSchema }]), MongooseModule.forFeature([{ name: 'comment', schema: Comment }])],
     providers: [BlogService],
-    controllers: [BlogController]
+    controllers: [BlogController],
+    exports: [BlogService]
 
 })
 export class BlogModule implements NestModule {

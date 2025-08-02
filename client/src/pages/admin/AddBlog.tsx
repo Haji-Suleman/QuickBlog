@@ -8,7 +8,7 @@ const AddBlog = () => {
   const [image, setImage] = useState<File | null>(null)
   const [title, setTitle] = useState('')
   const [subTitle, setSubTitle] = useState('')
-  const [category, setCategory] = useState("Startup")
+  const [category,setCategory] = useState("Startup")
   const [isPublished, setIsPublished] = useState(false)
   const generateContent = async () => {
 

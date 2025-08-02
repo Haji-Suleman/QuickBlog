@@ -17,7 +17,7 @@ export const AppProviders: React.FC<{ children: ReactNode }> = ({ children }) =>
             {children}
         </AppContext.Provider>
     );
-};
+};df
 export const useAppContext = () => {
     return useContext(AppContext)
 }

@@ -39,7 +39,7 @@ export class AdminService {
 
     }
   }
-  async getDashboard(body) {
+  async getDashboard() {
     try {
       const recentBlogs = await this.blogModel.find({}).sort({ createdAt: -1 }).limit(5) 
       const blogs = await this.blogModel.countDocuments(); 
@@ -57,7 +57,7 @@ export class AdminService {
   async deleteCommentById(body) {
     try {
       const { id } = body
-      await this.commentModel.findByIdAndDelete(+id)
+      await this.commentModel.findByIdAndDelete(id)
       return { success: true, message: "Comment deleted successfully" }
     } catch (error) {
       return { success: false, message: error.message }

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
+    "axios": "^1.11.0",
     "moment": "^2.30.1",
     "motion": "^12.19.1",
     "quill": "^2.0.3",

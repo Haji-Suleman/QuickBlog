@@ -14,4 +14,20 @@ export class AdminController {
     getAllComments() {
         return this.adminService.getAllComment()
     }
+    @Get("/blogs")
+    getAllBlogsAdmin() {
+        return this.adminService.getAllBlogsAdmin();
+    }
+    @Post("/delete-comment")
+    deleteCommentById(@Body("id") id: string) {
+        return this.adminService.deleteCommentById(id)
+    }
+    @Post("/approve-comment")
+    approveCommentById(@Body("id") id:string){
+        return this.adminService.approveCommentById(id);
+    }
+    @Get("/dashboard")
+    getDashboard(){
+        return this.adminService.getDashboard();
+    }
 }

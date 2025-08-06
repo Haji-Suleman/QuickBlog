@@ -47,5 +47,13 @@ export class BlogController implements NestModule {
     togglePublish(@Body("id") id: string) {
         return this.blogService.togglePublish(id)
     }
+    @Post("/add-comment")
+    addComment(@Body() body) {
+        return this.blogService.addComment(body)
+    }
+    @Post("/comments")
+    getBlogComments(@Body() body) {
+        return this.blogService.getBlogsComments(body)
+    }
 
 }

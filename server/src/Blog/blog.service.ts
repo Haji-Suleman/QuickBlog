@@ -84,7 +84,26 @@ export class BlogService {
             return { success: false, message: error.message };
         }
     }
+    async addComment(body) {
+        try {
+            const { blog, name, content } = body
+            await this.commentModel.create({ blog, name, content })
+            return { success: true, message: "Comment added for review" }
 
+        } catch (error) {
+            return { success: false, message: error.message }
+
+        }
+    }
+    async getBlogsComments(body) {
+        try {
+            const { blogId } = body;
+            const comments = await this.commentModel.find({ blog: blogId, isApproved: true }).sort(({ createdAt: -1 }))
+            return { success: true, comments }
+        } catch (error) {
+            return { success: false, message: error.message }
+        }
+    }
 
 
 }

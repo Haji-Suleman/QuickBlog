@@ -10,7 +10,7 @@ export class AdminService {
   private readonly EnvAdminPassword: string;
   private readonly JWT_SECRET: string;
 
-  constructor(private configService: ConfigService, @InjectModel("comment") private readonly commentModel: Model<Document>, @InjectModel("comment") private readonly blogModel: Model<Document>) {
+  constructor(private configService: ConfigService, @InjectModel("comment") private readonly commentModel: Model<Document>, @InjectModel("blog") private readonly blogModel: Model<Document>) {
     this.EnvAdminEmail = this.configService.get<string>('ADMIN_EMAIL') || '';
     this.EnvAdminPassword = this.configService.get<string>('ADMIN_PASSWORD') || '';
     this.JWT_SECRET = this.configService.get<string>('JWT_SECRET') || "";
@@ -26,6 +26,8 @@ export class AdminService {
   async getAllBlogsAdmin() {
     try {
       const blog = await this.blogModel.find({}).sort({ createdAt: -1 });
+      return { success: true, blog } // ✅ add return
+
     } catch (error) {
       return { succes: false, error: error.message }
     }
@@ -41,8 +43,8 @@ export class AdminService {
   }
   async getDashboard() {
     try {
-      const recentBlogs = await this.blogModel.find({}).sort({ createdAt: -1 }).limit(5) 
-      const blogs = await this.blogModel.countDocuments(); 
+      const recentBlogs = await this.blogModel.find({}).sort({ createdAt: -1 }).limit(5)
+      const blogs = await this.blogModel.countDocuments();
       const comments = await this.commentModel.countDocuments()
       const drafts = await this.blogModel.countDocuments({ isPublished: true })
       const dashboardData = {

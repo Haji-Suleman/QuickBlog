@@ -14,7 +14,7 @@ import auth from 'src/middleware/auth.middleware';
 })
 export class AdminModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(auth).forRoutes(AdminController)
+    consumer.apply(auth).exclude("/api/admin/login").forRoutes(AdminController)
   }
 
 }

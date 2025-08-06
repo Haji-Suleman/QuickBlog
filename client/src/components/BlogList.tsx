@@ -36,4 +36,3 @@ const BlogList = () => {
 }
 
 export default BlogList
-dfdsfsdfsdf

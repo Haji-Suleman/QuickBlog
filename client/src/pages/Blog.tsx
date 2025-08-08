@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useParams } from 'react-router-dom'
-import { assets,  } from '../assets/assets'
+import { assets, } from '../assets/assets'
 import Navbar from '../components/Navbar'
 import type { BlogType, commentDataType } from '../types'
 import Moment from 'moment'
@@ -28,11 +28,11 @@ const Blog = () => {
 
   const fetchComments = async () => {
     try {
-      const { data } = await axios.get("/api/blogs/comments", { blogId: id })
-      if(data.success){
+      const { data } = await axios.post("/api/blogs/comments", { blogId: id })
+      if (data.success) {
         setComments(data.comments)
       }
-      else{
+      else {
         toast.error(data.message)
       }
     } catch (error) {
@@ -43,16 +43,23 @@ const Blog = () => {
   const addComment = async (e: FormEvent) => {
     e.preventDefault()
     if (!name || !content) return
+    try {
+      const { data } = await axios.post("/api/blogs/add-comment", { blog: id, name, content })
+      const newComment: commentDataType = {
+        name,
+        content,
+        createdAt: new Date().toISOString()
+      }
 
-    const newComment: commentDataType = {
-      name,
-      content,
-      createdAt: new Date().toISOString()
+      setComments(prev => [newComment, ...prev])
+      setName('')
+      setContent('')
+      toast.success(data.message)
     }
 
-    setComments(prev => [newComment, ...prev])
-    setName('')
-    setContent('')
+    catch (error) {
+      toast.error(error.message)
+    }
   }
 
   useEffect(() => {
@@ -61,8 +68,8 @@ const Blog = () => {
   }, [])
 
   if (!data || !comments) return <Loader />
-  const updatedimage  = `http://localhost:3000${data.image}`
-  
+  const updatedimage = `http://localhost:3000${data.image}`
+
   return (
     <div className='relative'>
       <img src={assets.gradientBackground} className='absolute -top-50 -z-1 opacity-50' alt="" />

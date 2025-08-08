@@ -1,14 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { assets, blogCategories } from '../../assets/assets'
 import Quill from 'quill'
+import { useAppContext } from '../../context/AppContext'
 const AddBlog = () => {
+  const { axios } = useAppContext()
+  const [isAdding, setIsAdding] = useState(false)
   const editorRef = useRef(null)
   const quillRef = useRef(null)
 
   const [image, setImage] = useState<File | null>(null)
   const [title, setTitle] = useState('')
   const [subTitle, setSubTitle] = useState('')
-  const [category,setCategory] = useState("Startup")
+  const [category, setCategory] = useState("Startup")
   const [isPublished, setIsPublished] = useState(false)
   const generateContent = async () => {
 

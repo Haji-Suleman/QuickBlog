@@ -87,6 +87,7 @@ export class BlogService {
     async addComment(body) {
         try {
             const { blog, name, content } = body
+            console.log(blog,name,content)
             await this.commentModel.create({ blog, name, content })
             return { success: true, message: "Comment added for review" }
 

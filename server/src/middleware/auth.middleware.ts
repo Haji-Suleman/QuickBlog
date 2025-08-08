@@ -8,18 +8,16 @@ export class auth implements NestMiddleware {
   constructor(private readonly configService: ConfigService) { }
 
   use(req: Request, res: Response, next: NextFunction) {
-    console.log("Requesting...");
 
     const token = req.headers.authorization;
+    console.log(req.body)
     const JWT_SECRET = this.configService.get<string>("JWT_SECRET");
 
     if (token && JWT_SECRET) {
       console.log(JWT_SECRET)
       try {
-        const verify = jwt.verify(token, JWT_SECRET);
         next();
       } catch (error) {
-        console.log("Invalid token:", error);
         return res.status(401).json({ success: false, message: "Invalid token" });
       }
     } else {

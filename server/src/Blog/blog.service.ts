@@ -14,6 +14,7 @@ export class BlogService {
     async addBlog(body: AddBlogType, file) {
         try {
             const { title, subTitle, description, category, isPublished } = body;
+            console.log(body)
 
             if (!title || !subTitle || !description || !category || !file) {
                 return { success: false, message: 'Missing required fields' };
@@ -30,7 +31,7 @@ export class BlogService {
                 image: imageUrl,
             });
 
-            return { success: true, message: 'Blog created', image: imageUrl };
+            return { success: true, message: 'Blog added successfully', image: imageUrl };
         } catch (error) {
             console.error(error);
             return { success: false, message: error.message };
@@ -87,7 +88,7 @@ export class BlogService {
     async addComment(body) {
         try {
             const { blog, name, content } = body
-            console.log(blog,name,content)
+            console.log(blog, name, content)
             await this.commentModel.create({ blog, name, content })
             return { success: true, message: "Comment added for review" }
 

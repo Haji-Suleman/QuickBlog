@@ -18,7 +18,7 @@ export class BlogController implements NestModule {
     }
     @Post('add')
     @UseInterceptors(
-        FileInterceptor('file', {
+        FileInterceptor('image', {  // Changed from 'file' to 'image'
             storage: diskStorage({
                 destination: './uploads',
                 filename: (req, file, cb) => {
@@ -26,10 +26,24 @@ export class BlogController implements NestModule {
                     cb(null, `${file.fieldname}-${uniqueSuffix}${extname(file.originalname)}`);
                 },
             }),
+            fileFilter: (req, file, cb) => {
+                if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+                    cb(null, true);
+                } else {
+                    cb(new Error('Only image files are allowed!'), false);
+                }
+            },
+            limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
         }),
     )
-    addBlog(@UploadedFile() file, @Body() body: AddBlogType) {
-        return this.blogService.addBlog(body, file);
+    async addBlog(@UploadedFile() image: any, @Body() body: any) {
+        try {
+            const blogData = typeof body.blog === 'string' ? JSON.parse(body.blog) : body;
+            return await this.blogService.addBlog(blogData, image);
+        } catch (error) {
+            console.error(error);
+            return { success: false, message: 'Invalid request format.' };
+        }
     }
     @Get('all')
     getAllBlogs() {

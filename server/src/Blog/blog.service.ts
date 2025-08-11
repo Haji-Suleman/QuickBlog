@@ -10,7 +10,7 @@ export class BlogService {
         @InjectModel('blog') private blogModel: Model<BlogDocument>,
         @InjectModel('comment') private commentModel: Model<BlogDocument>
     ) { }
-
+    
     async addBlog(body: AddBlogType, file) {
         try {
             const { title, subTitle, description, category, isPublished } = body;
@@ -64,7 +64,7 @@ export class BlogService {
                 return { success: false, message: "Blog not Found" }
             }
             await this.commentModel.deleteMany({ blog: blogId })
-            return { success: true, blog }
+            return { success: true, blog , message:"Blog deleted successfully"}
 
         } catch (error) {
             console.log(error)

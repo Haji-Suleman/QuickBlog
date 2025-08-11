@@ -25,8 +25,8 @@ export class AdminService {
   }
   async getAllBlogsAdmin() {
     try {
-      const blog = await this.blogModel.find({}).sort({ createdAt: -1 });
-      return { success: true, blog } // ✅ add return
+      const blogs = await this.blogModel.find({}).sort({ createdAt: -1 });
+      return { success: true, blogs } // ✅ add return
 
     } catch (error) {
       return { succes: false, error: error.message }

@@ -6,6 +6,7 @@ import { BlogModule } from './Blog/blog.module';
 import { AdminModule } from './admin/admin.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CommentModule } from './comment/comment.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
     controllers: [AppController],
@@ -25,6 +26,7 @@ import { CommentModule } from './comment/comment.module';
         }),
         AdminModule,
         CommentModule,
+        AiModule,
     ],
 })
 

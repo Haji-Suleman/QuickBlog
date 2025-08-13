@@ -13,7 +13,7 @@ import { useAppContext } from './context/AppContext'
 const App = () => {
   const { token } = useAppContext()
   return (
-    <div>
+    <div> 
       <Toaster />
       <Routes>
         <Route element={<Home />} path='/' />

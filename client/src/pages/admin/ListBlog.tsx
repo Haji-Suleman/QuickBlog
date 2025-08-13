@@ -1,13 +1,25 @@
 import { useEffect, useState } from 'react'
-import { dashboard_data } from '../../assets/assets'
 import BlogTableItem from '../../components/admin/BlogTableItem'
-import type { DashboardDataType } from '../../types'
+import { useAppContext } from '../../context/AppContext'
+import toast from 'react-hot-toast'
 
 const ListBlog = () => {
-    const [Blogs, setBlogs] = useState<DashboardDataType>()
+    const [blogs, setBlogs] = useState([]) // Note: lowercase 'blogs' is more conventional
+    const { axios } = useAppContext()
+
     const fetchBlogs = async () => {
-        setBlogs(dashboard_data)
+        try {
+            const { data } = await axios.get("api/admin/blogs")
+            if (data.success) {
+                setBlogs(data.blogs) // Assuming data.blogs is the array
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
+
     useEffect(() => {
         fetchBlogs()
     }, [])
@@ -28,7 +40,7 @@ const ListBlog = () => {
                     </thead>
 
                     <tbody>
-                        {Blogs?.recentBlogs.map((blog, index) => (
+                        {blogs?.map((blog, index) => (
                             <BlogTableItem key={blog._id} blog={blog} fetchBlogs={fetchBlogs} index={index + 1} />
                         ))}
                     </tbody>
@@ -39,3 +51,5 @@ const ListBlog = () => {
 }
 
 export default ListBlog
+// 689a2ed99c05dab0294b0e7f
+// 689a2e829c05dab0294b0e4b

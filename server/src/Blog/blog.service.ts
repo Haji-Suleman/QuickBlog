@@ -3,12 +3,13 @@ import { Model } from 'mongoose';
 import { Blog, BlogDocument } from './blog.schema';
 import { Injectable } from '@nestjs/common';
 import { AddBlogType } from 'src/types';
+import { CommentDocument } from 'src/comment/comment.schema';
 
 @Injectable()
 export class BlogService {
     constructor(
         @InjectModel('blog') private blogModel: Model<BlogDocument>,
-        @InjectModel('comment') private commentModel: Model<BlogDocument>
+        @InjectModel('comment') private commentModel: Model<CommentDocument>
     ) { }
     
     async addBlog(body: AddBlogType, file) {

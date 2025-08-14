@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { Document } from "mongoose"
 
-export type BlogDocument = Document & commentSchema;
+export type CommentDocument = Document & commentSchema;
 
 @Schema({ timestamps: true })
 export class commentSchema {
@@ -12,7 +12,8 @@ export class commentSchema {
     @Prop({ required: true })
     content: string;
     @Prop({ default: false })
-    isApproved: false;
+    isApproved: boolean;
+
 }
 
 export const Comment = SchemaFactory.createForClass(commentSchema); 

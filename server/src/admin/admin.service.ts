@@ -3,14 +3,17 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import * as jwt from 'jsonwebtoken'; // ✅ fix for ESM
 import { Document, Model } from 'mongoose';
-
+import { BlogDocument } from 'src/Blog/blog.schema';
+import { CommentDocument } from 'src/comment/comment.schema';
 @Injectable()
 export class AdminService {
   private readonly EnvAdminEmail: string;
   private readonly EnvAdminPassword: string;
   private readonly JWT_SECRET: string;
 
-  constructor(private configService: ConfigService, @InjectModel("comment") private readonly commentModel: Model<Document>, @InjectModel("blog") private readonly blogModel: Model<Document>) {
+
+  constructor(private configService: ConfigService, @InjectModel('blog') private blogModel: Model<BlogDocument>,
+    @InjectModel('comment') private commentModel: Model<CommentDocument>) {
     this.EnvAdminEmail = this.configService.get<string>('ADMIN_EMAIL') || '';
     this.EnvAdminPassword = this.configService.get<string>('ADMIN_PASSWORD') || '';
     this.JWT_SECRET = this.configService.get<string>('JWT_SECRET') || "";

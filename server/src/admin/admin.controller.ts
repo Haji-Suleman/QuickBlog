@@ -19,15 +19,17 @@ export class AdminController {
         return this.adminService.getAllBlogsAdmin();
     }
     @Post("/delete-comment")
-    deleteCommentById(@Body("id") id: string) {
-        return this.adminService.deleteCommentById(id)
+    deleteCommentById(@Body() body: { id: string }) {
+        return this.adminService.deleteCommentById(body);
     }
+
     @Post("/approve-comment")
-    approveCommentById(@Body("id") id:string){
-        return this.adminService.approveCommentById(id);
+    approveCommentById(@Body() body: { id: string }) {
+        return this.adminService.approveCommentById(body);
     }
+
     @Get("/dashboard")
-    getDashboard(){
+    getDashboard() {
         return this.adminService.getDashboard();
     }
 }

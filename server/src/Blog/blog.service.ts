@@ -4,14 +4,16 @@ import { Blog, BlogDocument } from './blog.schema';
 import { Injectable } from '@nestjs/common';
 import { AddBlogType } from 'src/types';
 import { CommentDocument } from 'src/comment/comment.schema';
+import { AiService } from 'src/ai/ai.service';
 
 @Injectable()
 export class BlogService {
     constructor(
         @InjectModel('blog') private blogModel: Model<BlogDocument>,
-        @InjectModel('comment') private commentModel: Model<CommentDocument>
+        @InjectModel('comment') private commentModel: Model<CommentDocument>,
+        private aiService: AiService
     ) { }
-    
+
     async addBlog(body: AddBlogType, file) {
         try {
             const { title, subTitle, description, category, isPublished } = body;
@@ -65,7 +67,7 @@ export class BlogService {
                 return { success: false, message: "Blog not Found" }
             }
             await this.commentModel.deleteMany({ blog: blogId })
-            return { success: true, blog , message:"Blog deleted successfully"}
+            return { success: true, blog, message: "Blog deleted successfully" }
 
         } catch (error) {
             console.log(error)
@@ -107,7 +109,16 @@ export class BlogService {
             return { success: false, message: error.message }
         }
     }
+    async generateContent(body) {
+        try {
+            const { prompt } = body
+            const content = await this.aiService.main(prompt + "Generate a blog content for this topic in simple text format ")
+            return { success: true, content }
+        } catch (error) {
+            return { success: false, message: error.message }
+        }
 
+    }
 
 }
 

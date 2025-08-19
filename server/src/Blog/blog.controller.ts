@@ -12,7 +12,9 @@ export class BlogController implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(auth).forRoutes(
             { path: 'api/blogs/delete', method: RequestMethod.POST },
-            { path: 'api/blogs/toggle-publish', method: RequestMethod.POST }
+            { path: 'api/blogs/toggle-publish', method: RequestMethod.POST },
+            { path: 'api/blogs/generate', method: RequestMethod.POST }
+
         );
 
     }
@@ -69,5 +71,8 @@ export class BlogController implements NestModule {
     getBlogComments(@Body() body) {
         return this.blogService.getBlogsComments(body)
     }
-
+    @Post("/generate")
+    generateContent(@Body() body) {
+        return this.blogService.generateContent(body)
+    }
 }

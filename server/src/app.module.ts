@@ -7,6 +7,7 @@ import { AdminModule } from './admin/admin.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CommentModule } from './comment/comment.module';
 import { AiModule } from './ai/ai.module';
+import { AiService } from './ai/ai.service';
 
 @Module({
     controllers: [AppController],

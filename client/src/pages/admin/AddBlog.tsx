@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Quill from 'quill'
-import { useAppContext } from '../../context/AppContext'
 import { assets,blogCategories } from '../../assets/assets'
 import toast from 'react-hot-toast'
 import { parse } from "marked"
@@ -52,7 +51,7 @@ const AddBlog = () => {
         setImage(null)
         setTitle("")
         quillRef.current.root.innerHTML = ""
-        setCategory(Startup)
+        setCategory("Startup")
       } else {
         toast.error(data.message)
       }

@@ -17,7 +17,7 @@ export class AiService {
     async main(prompt): Promise<string | undefined> {
         const response = await this.ai.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: "Explain how AI works in a few words",
+            contents: prompt,
         });
         return response.text;
     }

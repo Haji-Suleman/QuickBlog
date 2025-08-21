@@ -114,7 +114,6 @@ export class BlogService {
             const { prompt } = body
             const content = await this.aiService.main(prompt + "Generate a blog content for this topic in simple text format")
             console.log(prompt)
-            console.log(content)
             return { success: true, content }
         } catch (error) {
             return { success: false, message: error.message }

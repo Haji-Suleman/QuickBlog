@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { assets, blogCategories } from '../../assets/assets'
 import Quill from 'quill'
 import { useAppContext } from '../../context/AppContext'
+import { assets,blogCategories } from '../../assets/assets'
 import toast from 'react-hot-toast'
+import { parse } from "marked"
+import axios from 'axios'
 const AddBlog = () => {
-  const { axios } = useAppContext()
   const [isAdding, setIsAdding] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const editorRef = useRef(null)
   const quillRef = useRef(null)
 
@@ -15,7 +18,22 @@ const AddBlog = () => {
   const [category, setCategory] = useState("Startup")
   const [isPublished, setIsPublished] = useState(false)
   const generateContent = async () => {
+    if (!title) return toast.error("Please enter a title")
+    try {
+      setLoading(true)
+      const { data } = await axios.post("api/blogs/generate", { prompt: title })
+      if (data.success) {
 
+        quillRef.current.root.innerHTML = parse(data.content)
+      } else {
+        toast.error(data.message)
+      }
+
+    }
+    catch (error) {
+      toast.error(error.message)
+
+    }
   }
   const onSubmitHandler = async (e: React.FormEvent) => {
     try {
@@ -90,7 +108,7 @@ const AddBlog = () => {
         <p className='mt-4'>Blog Description</p>
         <div className='max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative'>
           <div ref={editorRef}></div>
-          <button type='button' onClick={generateContent} className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer'>Generate with Ai</button>
+          <button type='button' disabled={loading} onClick={generateContent} className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer'>Generate with Ai</button>
         </div>
         <p className='mt-4'>Blog category</p>
         <select onChange={e => setCategory(e.target.value)} name="category" className='mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded'>

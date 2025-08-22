@@ -35,7 +35,7 @@ export interface commentDataType {
         __v: number;
         isPublished: boolean;
         subTitle: string;
-    }[],
+    },
     name: string,
     content: string,
     isApproved: boolean;

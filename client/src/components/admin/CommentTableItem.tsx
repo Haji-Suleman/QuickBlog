@@ -10,7 +10,7 @@ type Props = {
     fetchComments: () => Promise<void>
 }
 
-const CommentTableItem: React.FC<Props> = ({ comment, index, fetchComments }) => {
+const CommentTableItem: React.FC<Props> = ({ comment, fetchComments }) => {
 
     const approveComment = async (id: string) => {
         console.log("Frontend sending ID:", id)
@@ -50,7 +50,7 @@ const CommentTableItem: React.FC<Props> = ({ comment, index, fetchComments }) =>
     return (
         <tr className='order-y border-gray-300'>
             <td className='px-6 py-4'>
-                <b className="font-medium text-gray-600">Blog</b>: {comment.blogTitle}
+                <b className="font-medium text-gray-600">Blog</b>: {comment.blog.title}
                 <br /><br />
                 <b className='font-medium text-gray-600'>Name</b>: {comment.name}
                 <br />

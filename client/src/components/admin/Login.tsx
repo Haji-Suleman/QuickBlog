@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const Login = () => {
-    const { axios, setToken } = useAppContext()
+    const { setToken } = useAppContext()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const handleSubmit = async (e: Event) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         try {
             const { data } = await axios.post("/api/admin/login", { email, password })
@@ -19,7 +20,7 @@ const Login = () => {
                 toast.error(data.message)
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error((error as Error).message)
         }
 
     }

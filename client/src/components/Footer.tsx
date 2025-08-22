@@ -1,4 +1,3 @@
-import React from 'react'
 import { assets, footer_data } from '../assets/assets'
 
 const Footer = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Quill from 'quill'
-import { assets,blogCategories } from '../../assets/assets'
+import { assets, blogCategories } from '../../assets/assets'
 import toast from 'react-hot-toast'
 import { parse } from "marked"
 import axios from 'axios'
@@ -22,7 +22,6 @@ const AddBlog = () => {
       setLoading(true)
       const { data } = await axios.post("api/blogs/generate", { prompt: title })
       if (data.success) {
-
         quillRef.current.root.innerHTML = parse(data.content)
       } else {
         toast.error(data.message)
@@ -30,7 +29,7 @@ const AddBlog = () => {
 
     }
     catch (error) {
-      toast.error(error.message)
+      toast.error((error as Error).message)
 
     }
   }
@@ -44,20 +43,21 @@ const AddBlog = () => {
       }
       const formData = new FormData();
       formData.append("blog", JSON.stringify(blog))
-      formData.append("image", image)
+      if (image)
+        formData.append("image", image)
       const { data } = await axios.post("api/blogs/add", formData)
       if (data.success) {
         toast.success(data.message);
         setImage(null)
         setTitle("")
-        if(quillRef.current)
-        quillRef.current.root.innerHTML = ""
+        if (quillRef.current)
+          quillRef.current.root.innerHTML = ""
         setCategory("Startup")
       } else {
         toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error((error as Error).message)
     } finally {
       setIsAdding(false)
     }

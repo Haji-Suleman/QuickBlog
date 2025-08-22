@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import BlogTableItem from '../../components/admin/BlogTableItem'
-import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const ListBlog = () => {
     const [blogs, setBlogs] = useState([]) // Note: lowercase 'blogs' is more conventional
-    const { axios } = useAppContext()
 
     const fetchBlogs = async () => {
         try {
@@ -16,7 +15,7 @@ const ListBlog = () => {
                 toast.error(data.message)
             }
         } catch (error) {
-            toast.error(error.message)
+            toast.error((error as Error).message)
         }
     }
 

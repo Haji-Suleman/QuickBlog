@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { assets, dashboard_data } from '../../assets/assets'
+import { assets, } from '../../assets/assets'
 import BlogTableItem from '../../components/admin/BlogTableItem'
-import { useAppContext } from '../../context/AppContext'
 import toast from 'react-hot-toast'
 import Loader from '../../components/Loader'
+import axios from 'axios'
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [dashboardData, setDashboardData] = useState({
@@ -12,7 +12,6 @@ const Dashboard = () => {
         drafts: 0,
         recentBlogs: []  // Initialize as empty array
     })
-    const { axios } = useAppContext()
     const fetchDashboardData = async () => {
         try {
             setIsLoading(true)
@@ -22,7 +21,7 @@ const Dashboard = () => {
             console.log(data)
 
         } catch (error) {
-            toast.error(error.meessage)
+            toast.error((error as Error).message)
         }
         finally {
             setIsLoading(false)

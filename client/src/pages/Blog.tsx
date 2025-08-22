@@ -8,10 +8,10 @@ import Footer from '../components/Footer'
 import Loader from '../components/Loader'
 import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
+import axios from 'axios'
 
 const Blog = () => {
   const { id } = useParams()
-  const { axios } = useAppContext()
   const [comments, setComments] = useState<commentDataType[]>([])
   const [data, setData] = useState<BlogType | null>(null)
   const [name, setName] = useState('')
@@ -22,7 +22,7 @@ const Blog = () => {
       const { data } = await axios.get(`/api/blogs/${id}`)
       data.success ? setData(data.blog) : toast.error(data.message)
     } catch (error) {
-      toast.error(error.message)
+      toast.error((error as Error).message)
     }
   }
 
@@ -36,7 +36,7 @@ const Blog = () => {
         toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message)
+      toast.error((error as Error).message)
     }
   }
 

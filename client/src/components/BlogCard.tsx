@@ -1,4 +1,3 @@
-import React from 'react'
 import type { BlogDataType } from '../types';
 import { useNavigate } from 'react-router-dom';
 type Props = {

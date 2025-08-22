@@ -1,61 +1,70 @@
-import React from 'react'
-import { assets } from '../../assets/assets';
-import { useAppContext } from '../../context/AppContext';
-import toast from 'react-hot-toast';
+import React from "react";
+import { assets } from "../../assets/assets";
+import toast from "react-hot-toast";
+import axios from "axios";
 
-const BlogTableItem = ({ blog, fetchBlogs, index }) => {
-    const { title, createdAt } = blog;
-    const blogDate = new Date(createdAt)
-    const { axios } = useAppContext()
-    const deleteBlog = async () => {
-        const confirm = window.confirm("Are you sure you want to delete this blog?")
-        if (!confirm) return
-        try {
-            const { data } = await axios.post("/api/blogs/delete", { id: blog._id })
-            if (data.success) {
-                toast.success(data.message)
-                await fetchBlogs()
-            }
-            else {
-                toast.error(data.message)
-            }
-        } catch (error) {
-            toast.error(error.message)
-        }
-    }
-    const togglePublish = async () => {
-        try {
-            const { data } = await axios.post("/api/blogs/toggle-publish", { id: blog._id })
-            if (data.success) {
-                toast.success(data.message)
-                await fetchBlogs()
-            }
-            else {
-                toast.error(data.message)
-            }
-        } catch (error) {
-            toast.error(error.message)
-        }
-
-    }
-    return (
-        <>
-            <tr className='border-y border-gray-300'>
-                <th className='px-2 py-4'>{index}</th>
-                <td className='px-2 py-4'>{title}</td>
-                <td className='px-2 py-4 max-sm:hidden'>{blogDate.toDateString()}</td>
-                <td className='px-2 py-4 max-sm:hidden'>
-                    <p className={`${blog.isPublished ? "text-green-600" : "text-orange-700"}`}>{blog.isPublished ? "Published" : "Unpublished"}</p>
-                </td>
-                <td className='px-2 py-4 flex text-xs gap-3'>
-                    <button className='border px-2 py-0.5 mt-1 rounded cursor-pointer' onClick={togglePublish}>{blog.isPublished ? "Published" : "Unpublished"}</button>
-                    <img className='w-8 hover:scale-110 transition-all cursor-pointer' src={assets.cross_icon} onClick={deleteBlog} alt="" />
-                </td>
-
-
-            </tr>
-        </ >
-    )
+interface Blog {
+    _id: string;
+    title: string;
+    createdAt: string;
+    isPublished: boolean;
 }
 
-export default BlogTableItem
+interface BlogTableItemProps {
+    blog: Blog;
+    fetchBlogs: () => Promise<void>;
+    index: number;
+}
+
+const BlogTableItem: React.FC<BlogTableItemProps> = ({ blog, fetchBlogs, index }) => {
+    const { title, createdAt, isPublished, _id } = blog;
+    const blogDate = new Date(createdAt);
+
+    const deleteBlog = async () => {
+        if (!window.confirm("Are you sure you want to delete this blog?")) return;
+        try {
+            const { data } = await axios.post("/api/blogs/delete", { id: _id });
+            data.success ? (toast.success(data.message), await fetchBlogs()) : toast.error(data.message);
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : String(error));
+        }
+    };
+
+    const togglePublish = async () => {
+        try {
+            const { data } = await axios.post("/api/blogs/toggle-publish", { id: _id });
+            data.success ? (toast.success(data.message), await fetchBlogs()) : toast.error(data.message);
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : String(error));
+        }
+    };
+
+    return (
+        <tr className="border-y border-gray-300">
+            <th className="px-2 py-4">{index}</th>
+            <td className="px-2 py-4">{title}</td>
+            <td className="px-2 py-4 max-sm:hidden">{blogDate.toDateString()}</td>
+            <td className="px-2 py-4 max-sm:hidden">
+                <p className={isPublished ? "text-green-600" : "text-orange-700"}>
+                    {isPublished ? "Published" : "Unpublished"}
+                </p>
+            </td>
+            <td className="px-2 py-4 flex text-xs gap-3">
+                <button
+                    className="border px-2 py-0.5 mt-1 rounded cursor-pointer"
+                    onClick={togglePublish}
+                >
+                    {isPublished ? "Published" : "Unpublished"}
+                </button>
+                <img
+                    className="w-8 hover:scale-110 transition-all cursor-pointer"
+                    src={assets.cross_icon}
+                    onClick={deleteBlog}
+                    alt="Delete"
+                />
+            </td>
+        </tr>
+    );
+};
+
+export default BlogTableItem;

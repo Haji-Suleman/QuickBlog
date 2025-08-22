@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import type { commentDataType } from '../../types'
@@ -17,8 +17,8 @@ const Comments = () => {
       } else {
         toast.error(data.message)
       }
-    } catch (error: any) {
-      toast.error(error.message)
+    } catch (error) {
+      toast.error((error as Error).message)
     }
   }
 

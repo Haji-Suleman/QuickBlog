@@ -50,6 +50,7 @@ const AddBlog = () => {
         toast.success(data.message);
         setImage(null)
         setTitle("")
+        if(quillRef.current)
         quillRef.current.root.innerHTML = ""
         setCategory("Startup")
       } else {

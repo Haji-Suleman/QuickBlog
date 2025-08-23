@@ -6,7 +6,6 @@ import type { BlogType, commentDataType } from '../types'
 import Moment from 'moment'
 import Footer from '../components/Footer'
 import Loader from '../components/Loader'
-import { useAppContext } from '../context/AppContext'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
@@ -45,10 +44,11 @@ const Blog = () => {
     if (!name || !content) return
     try {
       const { data } = await axios.post("/api/blogs/add-comment", { blog: id, name, content })
+
       const newComment: commentDataType = {
         name,
         content,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       }
 
       setComments(prev => [newComment, ...prev])
@@ -58,7 +58,7 @@ const Blog = () => {
     }
 
     catch (error) {
-      toast.error(error.message)
+      toast.error((error as Error).message)
     }
   }
 

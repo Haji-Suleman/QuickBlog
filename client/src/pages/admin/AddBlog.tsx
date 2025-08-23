@@ -8,38 +8,46 @@ const AddBlog = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const editorRef = useRef(null)
-  const quillRef = useRef(null)
+  const editorRef = useRef<HTMLDivElement | null>(null)
+  const quillRef = useRef<Quill | null>(null) // ✅ Type fixed
 
   const [image, setImage] = useState<File | null>(null)
   const [title, setTitle] = useState('')
   const [subTitle, setSubTitle] = useState('')
   const [category, setCategory] = useState("Startup")
   const [isPublished, setIsPublished] = useState(false)
+
   const generateContent = async () => {
     if (!title) return toast.error("Please enter a title")
     try {
       setLoading(true)
       const { data } = await axios.post("api/blogs/generate", { prompt: title })
       if (data.success) {
-        quillRef.current.root.innerHTML = parse(data.content)
+        if (quillRef.current) { // ✅ null check 
+          quillRef.current.root.innerHTML = await parse(data.content) as string
+        }
       } else {
         toast.error(data.message)
       }
-
     }
     catch (error) {
       toast.error((error as Error).message)
-
+    }
+    finally {
+      setLoading(false)
     }
   }
+
   const onSubmitHandler = async (e: React.FormEvent) => {
     try {
       e.preventDefault()
       setIsAdding(true)
       const blog = {
-        title, subTitle, description: quillRef.current.root.innerHTML,
-        category, isPublished
+        title,
+        subTitle,
+        description: quillRef.current ? quillRef.current.root.innerHTML : "", // ✅ safe access
+        category,
+        isPublished
       }
       const formData = new FormData();
       formData.append("blog", JSON.stringify(blog))
@@ -47,11 +55,10 @@ const AddBlog = () => {
         formData.append("image", image)
       const { data } = await axios.post("api/blogs/add", formData)
       if (data.success) {
-        toast.success(data.message);
+        toast.success(data.message)
         setImage(null)
         setTitle("")
-        if (quillRef.current)
-          quillRef.current.root.innerHTML = ""
+        if (quillRef.current) quillRef.current.root.innerHTML = ""
         setCategory("Startup")
       } else {
         toast.error(data.message)
@@ -61,14 +68,14 @@ const AddBlog = () => {
     } finally {
       setIsAdding(false)
     }
-
   }
+
   useEffect(() => {
-    //Initiate Quill only once
     if (!quillRef.current && editorRef.current) {
-      quillRef.current = new Quill(editorRef.current, { theme: "snow" })
+      quillRef.current = new Quill(editorRef.current, { theme: "snow" }) // ✅ type-safe
     }
   }, [])
+
   return (
     <form onSubmit={onSubmitHandler} className='flex-1 bg-blue-50/50 text-gray-600 h-full overflow-scroll'>
       <div className='bg-white w-full max-w-3xl p-4 md:p-10 sm:m-10 shadow rounded'>

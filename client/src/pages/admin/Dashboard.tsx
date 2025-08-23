@@ -4,6 +4,7 @@ import BlogTableItem from '../../components/admin/BlogTableItem'
 import toast from 'react-hot-toast'
 import Loader from '../../components/Loader'
 import axios from 'axios'
+import type { BlogType } from '../../types'
 const Dashboard = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [dashboardData, setDashboardData] = useState({
@@ -76,7 +77,7 @@ const Dashboard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {dashboardData.recentBlogs?.map((blog, index) => (
+                                    {dashboardData.recentBlogs?.map((blog: BlogType, index) => (
                                         <BlogTableItem key={blog._id} blog={blog} fetchBlogs={fetchDashboardData} index={index + 1} />
                                     ))}
                                 </tbody>

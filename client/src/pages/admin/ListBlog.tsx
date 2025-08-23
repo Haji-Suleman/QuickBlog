@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import BlogTableItem from '../../components/admin/BlogTableItem'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import type { BlogType } from '../../types'
 
 const ListBlog = () => {
     const [blogs, setBlogs] = useState([]) // Note: lowercase 'blogs' is more conventional
@@ -39,7 +40,7 @@ const ListBlog = () => {
                     </thead>
 
                     <tbody>
-                        {blogs?.map((blog, index) => (
+                        {blogs?.map((blog: BlogType, index) => (
                             <BlogTableItem key={blog._id} blog={blog} fetchBlogs={fetchBlogs} index={index + 1} />
                         ))}
                     </tbody>

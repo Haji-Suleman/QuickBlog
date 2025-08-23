@@ -23,8 +23,8 @@ export interface BlogType {
     subTitle: string;
 }
 export interface commentDataType {
-    _id: string;
-    blog: {
+    _id?: string;
+    blog?: {
         _id: string;
         title: string;
         description: string;
@@ -38,9 +38,9 @@ export interface commentDataType {
     },
     name: string,
     content: string,
-    isApproved: boolean;
+    isApproved?: boolean;
     createdAt: string;
-    updatedAt: string;
+    updatedAt?: string;
 }
 export interface DashboardDataType {
     blogs: number;

@@ -12,7 +12,7 @@ type Props = {
 
 const CommentTableItem: React.FC<Props> = ({ comment, fetchComments }) => {
 
-    const approveComment = async (id: string) => {
+    const approveComment = async (id?: string) => {
         console.log("Frontend sending ID:", id)
         try {
             const { data } = await axios.post("/api/admin/approve-comment", { id })
@@ -28,7 +28,7 @@ const CommentTableItem: React.FC<Props> = ({ comment, fetchComments }) => {
         }
     }
 
-    const deleteComment = async (id: string) => {
+    const deleteComment = async (id?: string) => {
         console.log("Frontend sending ID:", id)
         const confirmDelete = window.confirm("Are you sure you want to delete this comment?")
         if (!confirmDelete) return
@@ -50,7 +50,7 @@ const CommentTableItem: React.FC<Props> = ({ comment, fetchComments }) => {
     return (
         <tr className='order-y border-gray-300'>
             <td className='px-6 py-4'>
-                <b className="font-medium text-gray-600">Blog</b>: {comment.blog.title}
+                <b className="font-medium text-gray-600">Blog</b>: {comment.blog?.title}
                 <br /><br />
                 <b className='font-medium text-gray-600'>Name</b>: {comment.name}
                 <br />

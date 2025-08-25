@@ -13,14 +13,16 @@ async function bootstrapServer() {
   return app.getHttpAdapter().getInstance();
 }
 
-if (process.env.VERCEL) {
-  module.exports = async (req: any, res: any) => {
-    if (!cachedServer) {
-      cachedServer = await bootstrapServer();
-    }
-    return cachedServer(req, res);
-  };
-} else {
+// This export is required for Vercel
+export default async function handler(req: any, res: any) {
+  if (!cachedServer) {
+    cachedServer = await bootstrapServer();
+  }
+  return cachedServer(req, res);
+}
+
+// Only start listening if run directly (local dev)
+if (require.main === module) {
   bootstrapServer().then(server => {
     server.listen(process.env.PORT ?? 3000, () => {
       console.log(`Server running on http://localhost:${process.env.PORT ?? 3000}`);

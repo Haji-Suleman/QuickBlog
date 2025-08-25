@@ -15,11 +15,7 @@
                 "POST",
                 "PUT",
                 "DELETE"
-            ],
-            "headers": {
-                "Access-Control-Allow-Origin": "*"
-            }
+            ]
         }
-    ],
-    "outputDirectory": "dist"
+    ]
 }

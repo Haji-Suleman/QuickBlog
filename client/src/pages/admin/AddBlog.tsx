@@ -16,12 +16,14 @@ const AddBlog = () => {
   const [subTitle, setSubTitle] = useState('')
   const [category, setCategory] = useState("Startup")
   const [isPublished, setIsPublished] = useState(false)
-
+  const [generating, setGenerating] = useState(false)
   const generateContent = async () => {
     if (!title) return toast.error("Please enter a title")
     try {
       setLoading(true)
+      setGenerating(true)
       const { data } = await axios.post("api/blogs/generate", { prompt: title })
+      setGenerating(false)
       if (data.success) {
         if (quillRef.current) { // ✅ null check 
           quillRef.current.root.innerHTML = await parse(data.content) as string
@@ -58,8 +60,8 @@ const AddBlog = () => {
         toast.success(data.message)
         setImage(null)
         setTitle("")
+        setSubTitle("")
         if (quillRef.current) quillRef.current.root.innerHTML = ""
-        setCategory("Startup")
       } else {
         toast.error(data.message)
       }
@@ -115,7 +117,7 @@ const AddBlog = () => {
         <p className='mt-4'>Blog Description</p>
         <div className='max-w-lg h-74 pb-16 sm:pb-10 pt-2 relative'>
           <div ref={editorRef}></div>
-          <button type='button' disabled={loading} onClick={generateContent} className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer'>Generate with Ai</button>
+          <button type='button' disabled={loading} onClick={generateContent} className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer'>{generating ? "Generating" : "Generate with Ai"}</button>
         </div>
         <p className='mt-4'>Blog category</p>
         <select onChange={e => setCategory(e.target.value)} name="category" className='mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded'>

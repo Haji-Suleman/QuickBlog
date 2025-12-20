@@ -38,7 +38,7 @@ export class BlogController implements NestModule {
             limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
         }),
     )
-    async addBlog(@UploadedFile() image: any, @Body() body: any) {
+    async addBlog(@UploadedFile() image: File, @Body() body: { blog: AddBlogType }) {
         try {
             const blogData = typeof body.blog === 'string' ? JSON.parse(body.blog) : body;
             return await this.blogService.addBlog(blogData, image);

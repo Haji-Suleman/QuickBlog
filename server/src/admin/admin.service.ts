@@ -59,7 +59,7 @@ export class AdminService {
       return { success: false, message: error.message }
     }
   }
-  async deleteCommentById(body) {
+  async deleteCommentById(body: { id: string }) {
     try {
       const { id } = body
       await this.commentModel.findByIdAndDelete(id)
@@ -68,7 +68,7 @@ export class AdminService {
       return { success: false, message: error.message }
     }
   }
-  async approveCommentById(body) {
+  async approveCommentById(body: { id: string }) {
     try {
       const { id } = body;
       await this.commentModel.findByIdAndUpdate(id, { isApproved: true });

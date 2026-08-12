@@ -9,7 +9,7 @@ async function bootstrapServer() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://quick-blog-sigma.vercel.app',
+    origin: 'https://quickblog-puce.vercel.app/',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

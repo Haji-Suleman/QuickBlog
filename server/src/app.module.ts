@@ -20,7 +20,7 @@ import { AiService } from './ai/ai.service';
         MongooseModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => {
-                const uri = configService.get('MONGODB_URL');
+                const uri = configService.get("MONGODB_URL");
                 return { uri };
             },
             inject: [ConfigService],
@@ -38,4 +38,3 @@ export class AppModule { }
 // gocerok690@asimarif.com
 // haji1212
 // dbPassword : dbpassword
-    
